@@ -6,6 +6,11 @@
 
 - To run the projects, make sure to install the required dependencies listed in the requirements.txt file
 
+- Provide your OpenAI API key in a .env file. Like: OPENAI_API_KEY=your_api_key
+
+- Screenshot:
+ ![Screenshot](screenshot.png)
+
 - Run: `streamlit run app.py`
 
 - you should see the application running in your browser.
