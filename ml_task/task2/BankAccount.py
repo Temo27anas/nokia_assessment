@@ -11,7 +11,7 @@ class BankAccount:
             raise TypeError("Account holder name should be a string")
         
         # Name pattern checking
-        correct_name_pattern = r'[A-Za-z]+( [A-Za-z]+)*'
+        correct_name_pattern = r'^[A-Za-z]+(?: [A-Za-z]+)+$' # full name with at least two words
         if not re.match(correct_name_pattern, account_holder_name):
             ValueError("Provide a valid full name")
 

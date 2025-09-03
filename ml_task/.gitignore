@@ -2,4 +2,5 @@ venv/
 utils/
 task1/.env
 task1/file.txt
-__pycache__/
+task1/__pycache__/
+task2/__pycache__/

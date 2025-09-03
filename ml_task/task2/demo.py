@@ -1,7 +1,7 @@
 from BankAccount import BankAccount
 
 # Create account
-account = BankAccount(123456, "555", 1000.50)
+account = BankAccount(123456, "Anas Tem", 1000.50)
 
 # Display initial info
 account.print_account_info()
