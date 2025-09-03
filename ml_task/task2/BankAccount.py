@@ -13,7 +13,7 @@ class BankAccount:
         # Name pattern checking
         correct_name_pattern = r'^[A-Za-z]+(?: [A-Za-z]+)+$' # full name with at least two words
         if not re.match(correct_name_pattern, account_holder_name):
-            ValueError("Provide a valid full name")
+            raise ValueError("Provide a valid full name")
 
         self.account_number = account_number
         self.account_holder_name = account_holder_name
