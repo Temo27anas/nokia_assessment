@@ -5,7 +5,6 @@ from sentence_transformers import SentenceTransformer
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sklearn.metrics.pairwise import cosine_similarity
 from openai import OpenAI
-
 import os
 
 load_dotenv()
@@ -27,16 +26,9 @@ def chuncker_semantic(TEXT_PATH_EXAMPLE):
     docs = text_splitter.create_documents([file_content])
     return docs
 
-def chucker_recusrsive(TEXT_PATH_EXAMPLE):
-    with open(TEXT_PATH_EXAMPLE) as f:
-        try:
-            file_content = f.read()
-        except UnicodeDecodeError:
-            print("Error During Decoding. Check Characters")
-            exit()
-
+def chucker_recusrsive(file_content):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size = 150,        # target chunk size in characters (or tokens)
+        chunk_size = 200,        # target chunk size in characters (or tokens)
         chunk_overlap = 50,      # overlap to maintain context between chunks
         separators = ["\n\n", "\n", " ", ""]  
         # The splitter will try to split by double newline (paragraph), then newline, then space, then as last resort character.
@@ -75,11 +67,25 @@ def prompt_to_llm(master_prompt):
     )
     return response.choices[0].message.content
 
-
-if __name__ == "__main__":
-    chuncks = chucker_recusrsive(TEXT_PATH_EXAMPLE)
+def parse_response(llm_response):
+    if "NOT FOUND" in llm_response:
+        return "NOT FOUND"
+    
+    try:
+        answer_part = llm_response.split("Answer:")[1].split("| Citations:")[0].strip()
+        citations_part = llm_response.split("| Citations:")[1].strip()
+        citations = [cit.strip() for cit in citations_part.split(";") if cit.strip()]
+        return {
+            "answer": answer_part,
+            "citations": citations
+        }
+    except IndexError:
+        print("Error parsing LLM response. Check the response format.")
+        return None
+    
+def pipeline(file_content, query):
+    chuncks = chucker_recusrsive(file_content)
     embeddings = embedder(chuncks)
-    query = "Would Google have to sell its Chrome web browser ?"
     top_chunks = get_top_chunks(query, embeddings, chuncks)
 
     master_prompt = "Answer only using the provided context snippets." \
@@ -90,5 +96,8 @@ if __name__ == "__main__":
                 + "Answer: <YOUR ANSWER> | Citations: <chunk_id> <preview from chunk>; <chunk_id> <preview from chunk> ... \n\n" \
                 + "* If the answer isn't supported by the context, reply: <NOT FOUND> - Be concise."
     
-    #print(master_prompt)
     llm_response = prompt_to_llm(master_prompt)
+    results = parse_response(llm_response)
+    return results
+
+    

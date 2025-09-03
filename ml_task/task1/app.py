@@ -1,21 +1,20 @@
 import streamlit as st
+from functions import pipeline 
+
 
 api_key = "TEST" # TBF
 
-def text_processor(uploaded_file):
+def read_text(uploaded_file):
     text = uploaded_file.read().decode("utf-8")
-    words = text.split()
-    chunks = [" ".join(words[i:i + 100]) for i in range(0, len(words), 100)]
+    return text
 
 def submit_prompt():
     pass
 
 st.title(" Document-Grounded Chatbot")
 
-# Upload File´
+# Upload File
 uploaded_file = st.file_uploader("Choose a file (.txt / .md)", type=("txt", "md"))
-if uploaded_file is not None:
-    text_processor(uploaded_file)
 
 # Chat Area
 question = st.text_input("Enter your question: 👇",
@@ -34,4 +33,17 @@ if bu: # If Clicked
 
     if uploaded_file and question and api_key: 
         results = submit_prompt()
+        file_content = read_text(uploaded_file)
+        with st.spinner("Wait for it...", show_time=True):
+            results = pipeline(file_content, question)
+            st.success("Done!")
+            st.subheader("Answer:")
+            st.write(results["answer"])
+
+            st.subheader("Citations:")
+            for citation in results["citations"]:
+                st.write(citation)
+
+
+
         
