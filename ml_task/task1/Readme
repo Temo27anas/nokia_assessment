@@ -1,0 +1,9 @@
+# Nokia ML Task 1
+
+- This task focuses on developing a machine learning pipeline for processing and analyzing text data
+
+- To run the projects, make sure to install the required dependencies listed in the requirements.txt file
+
+- Run: `streamlit run app.py`
+
+- you should see the application running in your browser.
