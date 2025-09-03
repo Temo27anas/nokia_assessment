@@ -8,6 +8,8 @@
 
 - Provide your OpenAI API key in a .env file. Like: OPENAI_API_KEY=your_api_key
 
+- you can use the file_testing.txt (Taken from BBC.com - For testing only)
+
 - Screenshot:
  ![Screenshot](screenshot.png)
 
