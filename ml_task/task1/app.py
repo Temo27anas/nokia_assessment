@@ -1,9 +1,6 @@
 import streamlit as st
 from functions import pipeline 
 
-
-api_key = "TEST" # TBF
-
 def read_text(uploaded_file):
     text = uploaded_file.read().decode("utf-8")
     return text
@@ -21,28 +18,36 @@ question = st.text_input("Enter your question: 👇",
                         disabled=not uploaded_file,
 )
 
-if uploaded_file and question and not api_key:
-    st.error("Error with API Key")
-
 # Ask Button
 bu = st.button("Ask", type="primary")
 
 if bu: # If Clicked
+    if not uploaded_file:
+        st.error("Error with provided file")
     if not question:
         st.error("Please Provide your question")
 
-    if uploaded_file and question and api_key: 
+    if uploaded_file and question: 
         results = submit_prompt()
         file_content = read_text(uploaded_file)
+
         with st.spinner("Wait for it...", show_time=True):
             results = pipeline(file_content, question)
-            st.success("Done!")
-            st.subheader("Answer:")
-            st.write(results["answer"])
 
-            st.subheader("Citations:")
-            for citation in results["citations"]:
-                st.write(citation)
+            if results is None:
+                st.error("Error in the Answer generation process")
+
+            elif "NOT FOUND" in results :
+                st.info("No Relevant Answer Found!")
+
+            else:
+                st.success("Done!")
+                st.subheader("Answer:")
+                st.write(results["answer"])
+
+                st.subheader("Citations:")
+                for citation in results["citations"]:
+                    st.write(citation)
 
 
 
