@@ -11,7 +11,7 @@
 - you can use the file_testing.txt (Taken from BBC.com - For testing only)
 
 - Screenshot:
- (screenshot.png)
+ ![Screenshot](https://github.com/Temo27anas/nokia_assessment/blob/main/ml_task/task1/screenshot.png)
 
 - Run: `streamlit run app.py`
 
