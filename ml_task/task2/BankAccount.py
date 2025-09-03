@@ -5,12 +5,13 @@ class BankAccount:
         # Checking Input
         if (initial_balance < 0):
             raise ValueError("Initial balance can't be negative")
-        if (not isinstance(account_number, str)):
-            raise TypeError("Account number should be a string")
+        if (not isinstance(account_number, int)):
+            raise TypeError("Account number should be a number")
         if (not isinstance(account_holder_name, str)):
             raise TypeError("Account holder name should be a string")
         
-        correct_name_pattern = "/^[a-z ,.'-]+$/i"
+        # Name pattern checking
+        correct_name_pattern = r'[A-Za-z]+( [A-Za-z]+)*'
         if not re.match(correct_name_pattern, account_holder_name):
             ValueError("Provide a valid full name")
 
