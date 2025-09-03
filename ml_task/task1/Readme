@@ -2,6 +2,8 @@
 
 - This task focuses on developing a machine learning pipeline for processing and analyzing text data
 
+- This app leverage Chunking using LangChain (Semantic or Recursive Approach), then uses similarity search to find relevant chunks for a given query. The top relevant chunks are then passed to a language model for generating answers.
+
 - To run the projects, make sure to install the required dependencies listed in the requirements.txt file
 
 - Run: `streamlit run app.py`
