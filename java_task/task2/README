@@ -12,3 +12,6 @@ How to run:
     java TaskScheduler
     ```
 
+Sources:
+ - https://www.geeksforgeeks.org/java implement-priorityqueue-comparator-java/
+ - https://www.geeksforgeeks.org/java/queue-peek-method-in-java/
