@@ -1,1 +1,14 @@
 # Task A2: Simple Task Scheduler
+
+The file `TaskScheduler.java` contains a `Task` class to represent individual tasks and a `TaskScheduler` class to manage and execute these tasks based on their scheduled times. The schedule uses a FIFO logic for tasks with the same time of execution.
+
+How to run:
+1. Compile the Java files:
+   ```bash
+   javac TaskScheduler.java
+   ```
+2. Run the TaskScheduler:
+   ```bash
+    java TaskScheduler
+    ```
+

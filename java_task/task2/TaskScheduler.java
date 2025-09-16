@@ -11,18 +11,20 @@ public class TaskScheduler {
 
    // schedules a new task 
     public void scheduleTask(String id, long epochSeconds, String description) {
-        Task newTask = new Task(id, epochSeconds, description);
+        long counter = queue.size(); // to maintain insertion order for tasks with same epochSeconds
+        Task newTask = new Task(id, epochSeconds, description, counter);
         queue.add(newTask);
     }
 
     // executes the next task in the queue
     public void executeDueTasks() {
-        long currentTime = System.currentTimeMillis() / 1000;
-        Task nextTask = queue.peek(); // select the task with the earliest time
-        
 
+        long currentTime = System.currentTimeMillis()/1000;
+        Task nextTask = queue.peek(); // select the task with the earliest time
+        Task dummy = new Task("", currentTime, "", 0);
+        
         while (nextTask != null
-                && nextTask.compareTo(new Task("", currentTime, "")) <= 0) {
+                && nextTask.compareTo(dummy) <= 0) {
             System.out.println("polling task: " + nextTask.getDescription());
             queue.poll(); // remove the executed task from the queue
             nextTask = queue.peek(); // get the next task
@@ -40,8 +42,9 @@ public class TaskScheduler {
 
         scheduler.scheduleTask("t1", now + 2, "Backup database");
         scheduler.scheduleTask("t2", now + 2, "Send report email 1");
-        scheduler.scheduleTask("t2", now + 2, "Send report email 2");
-        scheduler.scheduleTask("t2", now + 2, "Send report email 3");
+        scheduler.scheduleTask("t3", now + 2, "Send report email 2");
+        scheduler.scheduleTask("t4", now + 2, "Send report email 3");
+        scheduler.scheduleTask("t5", now + 2, "System cleanup");
         scheduler.scheduleTask("late", now - 5, "Run missed task");
 
         // simple loop
@@ -66,11 +69,13 @@ class Task implements Comparable<Task> {
     private final String name;
     private long epochSeconds;
     private final String description;
+    private long counter = 0;
 
-    public Task(String name, long epochSeconds, String description) {
+    public Task(String name, long epochSeconds, String description, long counter) {
         this.name = name;
         this.epochSeconds = epochSeconds;
         this.description = description;
+        this.counter = counter;
     }
 
     public String getDescription() {
@@ -79,8 +84,12 @@ class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task other) {
-        // compare tasks based on their epochSeconds
-        return Long.compare(this.epochSeconds, other.epochSeconds);
+        if (this.epochSeconds == other.epochSeconds) {
+            return Long.compare(this.counter, other.counter); // compare by counter if times are equal
+        }
+        else{
+            return Long.compare(this.epochSeconds, other.epochSeconds); // compare by epochSeconds
+        }
     }
 }
 
