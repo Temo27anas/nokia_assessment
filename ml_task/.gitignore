@@ -5,5 +5,3 @@ task1/file.txt
 task1/__pycache__/
 task2/__pycache__/
 
-# Ignore all .class files
-*.class
